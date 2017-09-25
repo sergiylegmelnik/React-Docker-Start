@@ -35,16 +35,21 @@ server.use('/public', express.static('./public'));
 server.use((req, res) => {
   const context = {};
   const body = ReactDOMServer.renderToString(
-    React.createElement(StaticRouter, { location: req.url, context }, React.createElement(App))
+    React.createElement(StaticRouter, {
+      location: req.url,
+      context
+    }, React.createElement(App))
   );
 
   if (context.url) {
     res.redirect(301, context.url);
   }
 
-  res.write(template({ body }));
+  res.write(template({
+    body
+  }));
   res.end();
 });
 
 console.log(`listening on ${port}`);
-server.listen(port);
+server.listen(process.env.PORT || port);
